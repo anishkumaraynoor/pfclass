@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import landingpage from '../assets/image.png'
 import { Link, useNavigate } from 'react-router-dom'
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 import ProjectCard from '../components/ProjectCard'
+
 
 function Home() {
   const [loginStatus, setLoginStatus] = useState(false)
@@ -17,7 +19,12 @@ function Home() {
     }
   }, []);
   const handleNavigate = ()=>{
-    navigate('/projects')
+    if(loginStatus===true){
+      navigate('/projects')
+    }else{
+      toast.warning("Please login to get full access to our projects")
+    }
+    
   }
 
   return (
@@ -52,6 +59,7 @@ function Home() {
           <button onClick={handleNavigate} className='btn btn-link'>View More Projects</button>
         </div>
       </div>
+      <ToastContainer></ToastContainer>
     </div>
   )
 }
