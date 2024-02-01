@@ -1,14 +1,21 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import landingpage from '../assets/image.png'
 import { Link, useNavigate } from 'react-router-dom'
-
 
 
 
 import ProjectCard from '../components/ProjectCard'
 
 function Home() {
+  const [loginStatus, setLoginStatus] = useState(false)
   const navigate = useNavigate()
+  useEffect(() => {
+    if(sessionStorage.getItem('token')){
+      setLoginStatus(true)
+    }else{
+      setLoginStatus(false)
+    }
+  }, []);
   const handleNavigate = ()=>{
     navigate('/projects')
   }
@@ -22,7 +29,8 @@ function Home() {
               <h1 style={{fontSize:'75px'}} className='fw-bolder text-light'>
                 <i style={{height:'80px'}} class='fa-solid fa-hand-holding-hand me-2 mb-3' ></i>Project Fair</h1>
               <p style={{textAlign:'justify'}}>One stop destination for all software development projects where user can add and manage their projects as well as access all projects available in our website...  What are you waiting for?!!!</p>
-              <Link className='btn btn-warning mt-3' to={'/login'}>Starts to Explore <i className='fa-solid fa-arrow-right'></i></Link>
+              {loginStatus?<Link className='btn btn-warning mt-3' to={'/dashboard'}>Manage your projects <i className='fa-solid fa-arrow-right'></i></Link>:
+              <Link className='btn btn-warning mt-3' to={'/login'}>Explore<i className='fa-solid fa-arrow-right'></i></Link>}
             </div>
             <div className="col-lg-1"></div>
             <div className="col-lg-4">
