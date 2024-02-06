@@ -4,6 +4,7 @@ import Modal from 'react-bootstrap/Modal';
 import uploadImg from '../assets/upload.png'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { addProjectAPI } from '../services/allAPI';
 
 
 function Add() {
@@ -22,12 +23,41 @@ function Add() {
   }
   const handleShow = () => setShow(true);
 
-  const handleProjectUpload = () =>{
+  const handleProjectUpload = async() =>{
     const {title, languages, overview, github, website, projectImage} = projectData
     if(!title || !overview || !languages || !github || !website || !projectImage){
       toast.info("please fill the form completely")
     }else{
-      console.log("proceed to API call");
+      const reqBody = new FormData()
+      reqBody.append("title",title)
+      reqBody.append("languages",languages)
+      reqBody.append("overview",overview)
+      reqBody.append("github",github)
+      reqBody.append("website",website)
+      reqBody.append("projectImage",projectImage)
+      const token = sessionStorage.getItem("token")
+      if(token){
+        const reqHeader = {
+          "Content-Type":"multipart/form-data",
+          "Authorization": `Bearer ${token}`
+        }
+        console.log("proceed to api call");
+        try {
+          const result = await addProjectAPI(reqBody,reqHeader)
+          console.log(result);
+          if(result.status===200){
+            toast.success(`New Project ${result.data.title} has added successfully`)
+            console.log(result.data);
+            handleClose()
+          }else{
+            toast.warning(result.response.data)
+          }
+        } catch (error) {
+          
+        }
+        
+      }
+      
     }
   }
 
