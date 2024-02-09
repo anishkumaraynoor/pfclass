@@ -6,6 +6,10 @@ import Profile from '../components/Profile'
 
 function Dashboard() {
   const [loginStatus, setLoginStatus] = useState(false)
+
+  
+    
+
   useEffect(() => {
     if(sessionStorage.getItem('token')){
       setLoginStatus(true)
@@ -13,6 +17,7 @@ function Dashboard() {
       setLoginStatus(false)
     }
   }, []);
+
   return (
     <>
     <Header insideDashboard></Header>

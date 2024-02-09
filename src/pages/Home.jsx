@@ -6,12 +6,27 @@ import 'react-toastify/dist/ReactToastify.css';
 
 
 import ProjectCard from '../components/ProjectCard'
+import { getHomeProjectsAPI } from '../services/allAPI';
 
 
 function Home() {
+  const [allProjects, setAllProjects] = useState([]);
   const [loginStatus, setLoginStatus] = useState(false)
   const navigate = useNavigate()
+
+  const getHomeProjects = async()=>{
+    try {
+      const result = await getHomeProjectsAPI()
+      if(result.status === 200){
+        setAllProjects(result.data)
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  console.log(allProjects);
   useEffect(() => {
+    getHomeProjects()
     if(sessionStorage.getItem('token')){
       setLoginStatus(true)
     }else{
@@ -50,9 +65,13 @@ function Home() {
         <h1 className="text-center mb-5">Explore Our Projects</h1>
         <marquee behavior="" direction="">
           <div className="d-flex">
-            <div className="project me-5">
-              <ProjectCard/>
+            { allProjects.length>0&& allProjects.map((project, index)=>(
+              <div key={index} className="project me-5">
+              <ProjectCard project={project}/>
             </div>
+            ))
+              
+            }
           </div>
         </marquee>
         <div className="text-center">

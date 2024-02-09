@@ -3,7 +3,11 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import uploadImg from '../assets/upload.png'
 
-function Edit() {
+
+
+
+
+function Edit({project}) {
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
